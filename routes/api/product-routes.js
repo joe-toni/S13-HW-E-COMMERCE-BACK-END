@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     let result = await Product.findAll({include: [{model:Category},{model: Tag, as: "tags"}]});
     res.status(200).json(result);
   }
-  catch
+  catch(err)
   {
     res.status(400).json(err);
   }
@@ -26,7 +26,7 @@ router.get('/:id',  async (req, res) => {
     let result = await Product.findByPk(req.params.id, {include: [{model:Category},{model: Tag, as: "tags"}]});
     res.status(200).json(result);
   }
-  catch
+  catch(err)
   {
     res.status(400).json(err);
   }
@@ -114,7 +114,7 @@ router.delete('/:id', async (req, res) => {
    let result = await Product.destroy({where: {id: req.params.id}})
   res.status(200).json( result);
   }
-  catch
+  catch(err)
   {
     res.status(400).json(err);
   }

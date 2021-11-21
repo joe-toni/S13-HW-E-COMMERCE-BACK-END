@@ -10,7 +10,7 @@ try
   let result = await Tag.findAll({include: [{model: Product, as: "products"}]});
   res.status(200).json(result);
 }
-catch
+catch(err)
 {
   res.status(400).json(err);
 }
@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
   let result = await Tag.findByPk(req.params.id, {include: [{model: Product, as: "products"}]});
   res.status(200).json(result);
 }
-catch
+catch(err)
 {
   res.status(400).json(err);
 }
@@ -38,7 +38,7 @@ try
   await Tag.create({tag_name: req.body.tag_name});
   res.status(200).json( await Tag.findOne({where: {tag_name: req.body.tag_name}}));  
 } 
-catch
+catch(err)
 {
   res.status(400).json(err);
 }
@@ -51,7 +51,7 @@ router.put('/:id', async (req, res) => {
     await Tag.update({tag_name: req.body.tag_name}, {where: {id: req.params.id}})
     res.status(200).json(await Tag.findOne({where: {id: req.params.id}}));
   }
-  catch
+  catch(err)
   {
     res.status(400).json(err);
   }
@@ -64,7 +64,7 @@ try
   let result = await Tag.destroy({where: {id: req.params.id}});
   res.status(200).json(result);
 }
-catch
+catch(err)
 {
   res.status(400).json(err);
 }

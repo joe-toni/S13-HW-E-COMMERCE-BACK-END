@@ -1,3 +1,5 @@
+//This is the index file used to connect all our existing routers and it uses a catch route to signal an attempt to connect to an 
+//incorrect or non existant route
 const router = require('express').Router();
 const apiRoutes = require('./api');
 

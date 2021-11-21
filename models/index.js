@@ -4,6 +4,9 @@ const Category = require('./Category');
 const Tag = require('./Tag');
 const ProductTag = require('./ProductTag');
 
+//This index file collects all our established models and creates the associations between them for use by both our server.js and our
+//seeds.js files
+
 // Categories have many Products
 Category.hasMany(Product, {foreignKey: 'category_id', onDelete: 'SET NULL' , onUpdate:'CASCADE'});
 // Products belongsTo Category

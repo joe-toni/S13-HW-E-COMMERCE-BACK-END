@@ -2,8 +2,8 @@ const router = require('express').Router();
 const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
-//find all categories
- // be sure to include its associated Products
+
+//This route displays all existing category instances and related products from our category model
 router.get('/', async (req, res) => {
   try
   {
@@ -18,8 +18,8 @@ router.get('/', async (req, res) => {
  
 });
 
-// find one category by its `id` value
- // be sure to include its associated Products
+//This route displays one instance from our category model based on the passed in id and finds out if the user
+//has given an incorrect id by checking if the value returned by the query to the model is null
 router.get('/:id', async (req, res) => {
   try
   {
@@ -38,7 +38,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
- // create a new category
+ // This route creates a new instance in our category model but only if the name value passed in by the user
+ //does not already match an existing category.
 router.post('/', async (req, res) => {  
   try
   {
@@ -61,7 +62,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// update a category by its `id` value
+// This route updates the name on an existing instance in our category model but only if the user has provided a valid id for the 
+//the update
 router.put('/:id', async (req, res) => {
   try
   {
@@ -81,7 +83,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// delete a category by its `id` value
+// This route deletes an existing instance but only if the id passed in actually corresponds to one that  exists
 router.delete('/:id', async (req, res, ) => {
   try
   {
