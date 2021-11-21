@@ -61,8 +61,8 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 try
 {
-  await Tag.destroy({where: {id: req.params.id}});
-  res.status(200).json(await Tag.findAll({include: {model: Product, as: "products"}}));
+  let result = await Tag.destroy({where: {id: req.params.id}});
+  res.status(200).json(result);
 }
 catch
 {

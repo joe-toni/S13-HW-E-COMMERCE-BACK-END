@@ -5,8 +5,16 @@ const { Category, Product } = require('../../models');
 //find all categories
  // be sure to include its associated Products
 router.get('/', async (req, res) => {
-  let result = await Category.findAll({include: Product});
-  res.json(result);
+  try
+  {
+   let result = await Category.findAll({include: Product});
+    res.status(200).json(result);
+  }
+  catch (err)
+  {
+    res.status(400).json(err);
+  }
+
  
 });
 
@@ -15,12 +23,18 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try
   {
-  let result = await Category.findByPk(req.params.id, {include: Product});
-  res.json(result);
+    let result = await Category.findByPk(req.params.id, {include: Product});
+    if (result === null)
+    {
+      let err = {status: 404, message: 'Invalid Category ID'};
+      throw err;
+    }
+    else
+      {res.status(200).json(result);}
   }
-  catch
+  catch (err)
   {
-    res.status(400).json(err);
+    res.status(err.status).json(err.message);
   }
 });
 
@@ -28,43 +42,59 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {  
   try
   {
-      await Category.create({categoryName: req.body.categoryName});
-      let result = await Category.findOne({where: {categoryName: req.body.categoryName}});
-      res.json(result);
+    let check = await Category.findOne({where: {category_name: req.body.category_name}});
+    if(check === null)
+    {
+      await Category.create({category_name: req.body.category_name});
+      let result = await Category.findOne({where: {category_name: req.body.category_name}});
+      res.status(200).json(result);
+    }
+    else
+    {
+      let err = {status: 403, message: 'This category already exists'};
+      throw err;
+    }
   }
-  catch
+  catch (err)
   {
-    res.status(400).json(err);
+    res.status(err.status).json(err.message);
   }
-
 });
 
 // update a category by its `id` value
 router.put('/:id', async (req, res) => {
   try
   {
-    await Category.update({categoryName: req.body.categoryName},{where: {id: req.params.id}});
+    await Category.update({category_name: req.body.category_name},{where: {id: req.params.id}});
     let result = await Category.findOne({where: {id: req.params.id}});
-    res.json(result);
+    if (result === null)
+    {
+      let err = {status: 404, message: 'Invalid Category ID'};
+      throw err;
+    }
+    else
+    { res.status(200).json(result);}
   }
-  catch
+  catch(err)
   {
-    res.status(400).json(err);
+    res.status(err.status).json(err.message);
   }
 });
+
 // delete a category by its `id` value
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, ) => {
   try
   {
-    await Category.destroy({where:{id: req.params.id}});
-    let result = await Category.findAll({include: Product});
-    res.json(result);
+    let result = await Category.destroy({where:{id: req.params.id}});
+     if (result === 0)
+      {throw 'Invalid category ID'}
+    else
+      { res.status(200).json(result);}
   }
-  catch
+  catch (err)
   {
-    res.status(400).json(err);
+    res.status(404).json(err);
   }
-  
 });
 
 module.exports = router;
